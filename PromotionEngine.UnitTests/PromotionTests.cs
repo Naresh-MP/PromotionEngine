@@ -9,21 +9,24 @@ namespace PromotionEngine.UnitTests
 {
     public class PromotionTests
     {
-
+        IPromotion _NItemsOfSameSKUFPromotion;
         [SetUp]
         public void Setup()
         {
+            _NItemsOfSameSKUFPromotion = new NItemsOfSameSKUFixedPrice('A', 3, 130);
         }
 
-        public void ApplyPromotion_NItemsOfSameSKUFixedPrice_Should_Throw_NotImplementedException()
+        [Test]
+        public void ApplyPromotion_NItemsOfSameSKUFixedPrice_Should_Apply_Promotion()
         {
-            Cart cart = new Cart();
-            NItemsOfSameSKUFixedPrice _NItemsOfSameSKUFPromotion = new NItemsOfSameSKUFixedPrice('A', 3, 130);
+            Cart cart = new Cart();            
             cart.AddItemsToCart(new StockUnit { Id = 'A', Price = 50.00 }, 3);
 
-            var ex = Assert.Throws<NotImplementedException>(() => _NItemsOfSameSKUFPromotion.ApplyPromotion(cart)); ;
-            Assert.That(ex.Message, Is.EqualTo("The method or operation is not implemented"));
+            var actual = _NItemsOfSameSKUFPromotion.ApplyPromotion(cart);
+
+            Assert.AreEqual(130, actual);
         }
+
 
         [Test]
         public void ApplyPromotion_MultipleSKUForFixedPrice_Should_Throw_NotImplementedException()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PromotionEngine.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PromotionEngine.Promotions
 {
-    public class NItemsOfSameSKUFixedPrice 
+    public class NItemsOfSameSKUFixedPrice :IPromotion
     {
         private readonly char _sKU;
         private readonly double _fixedPrice;
@@ -19,9 +20,19 @@ namespace PromotionEngine.Promotions
             _fixedPrice = fixedPrice;
         }
 
-        public double ApplyPromotion(Cart cart)
+        public double ApplyPromotion(ICart cart)
         {
-            throw new NotImplementedException();
+            double selectedItemsTotal = 0.00;
+            var selectedItems = cart.CartItems.Where(x => x.Id == _sKU);
+            double unitPrice = selectedItems.First().Price;
+
+            int itemsInCart = selectedItems.Count();
+
+            if (itemsInCart >= _quantity)
+            {
+                selectedItemsTotal = (itemsInCart / _quantity * _fixedPrice) + (itemsInCart % _quantity * unitPrice);
+            }
+            return selectedItemsTotal;
         }
     }
 }

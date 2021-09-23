@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using PromotionEngine.Interfaces;
 using System;
 using System.Linq;
 
