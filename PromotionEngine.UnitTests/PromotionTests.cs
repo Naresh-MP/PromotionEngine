@@ -10,10 +10,12 @@ namespace PromotionEngine.UnitTests
     public class PromotionTests
     {
         IPromotion _NItemsOfSameSKUFPromotion;
+        IPromotion _MultipleSKUPromotion;
         [SetUp]
         public void Setup()
         {
             _NItemsOfSameSKUFPromotion = new NItemsOfSameSKUFixedPrice('A', 3, 130);
+            _MultipleSKUPromotion = new MultipleSKUForFixedPrice(new List<char> { 'C', 'D' }, 30);
         }
 
         [Test]
@@ -32,13 +34,13 @@ namespace PromotionEngine.UnitTests
         public void ApplyPromotion_MultipleSKUForFixedPrice_Should_Throw_NotImplementedException()
         {
             Cart cart = new Cart();
-            MultipleSKUForFixedPrice _MultipleSKUPromotion = new MultipleSKUForFixedPrice(new List<char> { 'C', 'D' }, 45);
+            
             cart.AddItemsToCart(new StockUnit { Id = 'C', Price = 20.00 }, 1);
             cart.AddItemsToCart(new StockUnit { Id = 'D', Price = 15.00 }, 1);
 
-            var ex = Assert.Throws<NotImplementedException>(() => _MultipleSKUPromotion.ApplyPromotion(cart)); ;
+            var actual = _MultipleSKUPromotion.ApplyPromotion(cart);
 
-            Assert.That(ex.Message, Is.EqualTo("The method or operation is not implemented"));
+            Assert.AreEqual(5, actual);
         }
 
     }
