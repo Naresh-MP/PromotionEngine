@@ -16,6 +16,7 @@ namespace PromotionEngine
         public double CalculateTotalPrice(ICart cart)
         {
             double totalDiscount = 0.00;
+            cart.AppliedPromotions = new List<string>();
 
             foreach (var promotion in _activePromotions)
             {

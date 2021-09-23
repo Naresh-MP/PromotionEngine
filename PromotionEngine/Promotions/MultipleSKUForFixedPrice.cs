@@ -17,7 +17,7 @@ namespace PromotionEngine.Promotions
             _sKUIds = sKUIds;
             _fixedPrice = fixedPrice;
         }
-        
+
         public double ApplyPromotion(ICart cart)
         {
             double selectedItemsTotal = 0.00;
@@ -26,14 +26,24 @@ namespace PromotionEngine.Promotions
             var secondComboSKU = cart.CartItems.Where(item => item.Id == _sKUIds[1]);
 
             //Make sure you have atlest one combo available
-            if (firstComboSKU.Count() >= 1 && secondComboSKU.Count() >= 1)
+            if (firstComboSKU.Count() >= 1 && secondComboSKU.Count() >= 1 && IsPromotionApplied(cart))
             {
                 int bundleCount = Math.Min(firstComboSKU.Count(), secondComboSKU.Count());
                 selectedItemsTotal = (firstComboSKU.First().Price + secondComboSKU.First().Price - _fixedPrice) * bundleCount;
-
+                cart.AppliedPromotions.Add(string.Join('-', _sKUIds.Select(x => x)));
                 return selectedItemsTotal;
             }
             return default;
+        }
+
+        bool IsPromotionApplied(ICart cart)
+        {
+            string promoCode = string.Join('-', _sKUIds.Select(x => x));
+            if (!cart.AppliedPromotions.Contains(promoCode))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

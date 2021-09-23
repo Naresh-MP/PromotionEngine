@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace PromotionEngine.Promotions
 {
-    public class NItemsOfSameSKUFixedPrice :IPromotion
+    public class NItemsOfSameSKUFixedPrice : IPromotion
     {
         private readonly char _sKU;
         private readonly double _fixedPrice;
         private readonly int _quantity;
-        public List<char> AppliedPromotions { get; set; }
+
         public NItemsOfSameSKUFixedPrice(char sKUId, int quantity, double fixedPrice)
         {
             _sKU = sKUId;
@@ -22,17 +22,29 @@ namespace PromotionEngine.Promotions
 
         public double ApplyPromotion(ICart cart)
         {
-            double selectedItemsTotal = 0.00;
+            double discount = 0.00;
             var selectedItems = cart.CartItems.Where(x => x.Id == _sKU);
             double unitPrice = selectedItems.First().Price;
+            double totalSKUCartValue = selectedItems.Sum(item => item.Price);
 
             int itemsInCart = selectedItems.Count();
 
-            if (itemsInCart >= _quantity)
+            if (itemsInCart >= _quantity && IsPromotionApplied(cart))
             {
-                selectedItemsTotal = (itemsInCart / _quantity * _fixedPrice) + (itemsInCart % _quantity * unitPrice);
+                discount = (itemsInCart / _quantity * _fixedPrice) + (itemsInCart % _quantity * unitPrice);
+                cart.AppliedPromotions.Add(_sKU.ToString());
+                return totalSKUCartValue - discount;
             }
-            return selectedItemsTotal;
+            return discount;
+        }
+
+        bool IsPromotionApplied(ICart cart)
+        {
+            if (!cart.AppliedPromotions.Contains(_sKU.ToString()))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

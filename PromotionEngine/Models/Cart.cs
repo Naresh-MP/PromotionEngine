@@ -11,6 +11,8 @@ namespace PromotionEngine
     {
         public List<StockUnit> CartItems { get; set; }
 
+        public List<string> AppliedPromotions { get; set; }
+
         public Cart()
         {
             CartItems = new List<StockUnit>();

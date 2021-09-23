@@ -35,5 +35,40 @@ namespace PromotionEngine.UnitTests
 
             Assert.AreEqual(100, actual);
         }
+
+        [Test]
+        public void CalculateTotalPrice_NItemsOf_SAMESKU_with_Same_Promotion_Should_Not_Apply_Twice()
+        {
+            _cart = new Cart();
+            List<IPromotion> activePromotions = new List<IPromotion> {
+                new NItemsOfSameSKUFixedPrice ( 'A', 3, 130 ) ,                
+                new NItemsOfSameSKUFixedPrice ( 'A', 3, 130 )
+            };
+            _promotionEngine = new PromotionEngine(activePromotions);
+
+            _cart.AddItemsToCart(new StockUnit { Id = 'A', Price = 50 }, 3);
+
+            var actual = _promotionEngine.CalculateTotalPrice(_cart);
+
+            Assert.AreEqual(130, actual);
+        }
+
+        [Test]
+        public void CalculateTotalPrice_MultpleSLU__Same_Promotion_Should_Not_Apply_Twice()
+        {
+            _cart = new Cart();
+            List<IPromotion> activePromotions = new List<IPromotion> {
+                new MultipleSKUForFixedPrice ( new List<char>{'C', 'D'}, 30 ) ,
+               new MultipleSKUForFixedPrice ( new List<char>{'C', 'D'}, 30)
+            };
+            _promotionEngine = new PromotionEngine(activePromotions);
+
+            _cart.AddItemsToCart(new StockUnit { Id = 'C', Price = 20 }, 1);
+            _cart.AddItemsToCart(new StockUnit { Id = 'D', Price = 15 }, 1);
+
+            var actual = _promotionEngine.CalculateTotalPrice(_cart);
+
+            Assert.AreEqual(30, actual);
+        }
     }
 }

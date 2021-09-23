@@ -9,6 +9,8 @@ namespace PromotionEngine.Interfaces
     public interface ICart
     {
         public List<StockUnit> CartItems { get; set; }
+        public List<string> AppliedPromotions { get; set; }
+
         void AddItemsToCart(StockUnit stockUnit, int quantity);
         IEnumerable<StockUnit> GetItemsFromCart(char sKUId);
         void ClearCart();
