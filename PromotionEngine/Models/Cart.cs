@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PromotionEngine
 {
-    public class Cart
+    public class Cart : ICart
     {
-        public List<StockUnit> CartItems;
+        public List<StockUnit> CartItems { get; set; }
 
         public Cart()
         {

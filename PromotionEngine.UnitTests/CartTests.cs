@@ -6,6 +6,7 @@ namespace PromotionEngine.UnitTests
 {
     public class CartTests
     {
+        ICart cart;
         [SetUp]
         public void Setup()
         {
@@ -14,7 +15,7 @@ namespace PromotionEngine.UnitTests
         [Test]
         public void AddItemsToCart_Should_Add_Items_To_Cart()
         {
-            Cart cart = new Cart();
+            cart = new Cart();
             var stockUnit = new StockUnit { Id = 'A', Price = 50.00 };
 
             cart.AddItemsToCart(stockUnit,1);
@@ -24,7 +25,7 @@ namespace PromotionEngine.UnitTests
         [Test]
         public void AddItemsToCart_Should_Add_Multiple_Items_To_Cart()
         {
-            Cart cart = new Cart();
+            cart = new Cart();
             var stockUnitA = new StockUnit { Id = 'A', Price = 50.00 };            
             var stockUnitB = new StockUnit { Id = 'B', Price = 45.00 };
 
