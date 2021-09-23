@@ -16,8 +16,8 @@ namespace PromotionEngine.UnitTests
             Cart cart = new Cart();
             var stockUnit = new StockUnit { Id = 'A', Price = 50.00 };
 
-            var ex = Assert.Throws<NotImplementedException>(() => cart.AddItemsToCart(stockUnit));
-            Assert.That(ex.Message, Is.EqualTo("The method or operation is not implemented"));
+            cart.AddItemsToCart(stockUnit);
+            Assert.AreEqual(1, cart.CartItems.Count);
         }
     }
 }

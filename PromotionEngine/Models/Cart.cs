@@ -17,7 +17,7 @@ namespace PromotionEngine
 
         public void AddItemsToCart(StockUnit stockUnit)
         {
-            throw new NotImplementedException();
+            CartItems.Add(stockUnit);
         }
     }
 }
