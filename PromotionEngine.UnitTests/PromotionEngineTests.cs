@@ -70,5 +70,32 @@ namespace PromotionEngine.UnitTests
 
             Assert.AreEqual(30, actual);
         }
+
+        [Test]
+        public void CalculateTotalPrice_Two_NItems_Of_SameSKU_PromotionsApplied()
+        {
+            _cart = new Cart();
+            _cart.AddItemsToCart(new StockUnit { Id = 'A', Price = 50 }, 5);
+            _cart.AddItemsToCart(new StockUnit { Id = 'B', Price = 30 }, 5);
+            _cart.AddItemsToCart(new StockUnit { Id = 'C', Price = 20 }, 1);
+
+            var actual = _promotionEngine.CalculateTotalPrice(_cart);
+
+            Assert.AreEqual(370, actual);
+        }
+
+        [Test]
+        public void CalculateTotalPrice_With_Multiple_Types_Of_PromotionsApplied()
+        {
+            _cart = new Cart();
+            _cart.AddItemsToCart(new StockUnit { Id = 'A', Price = 50 }, 3);
+            _cart.AddItemsToCart(new StockUnit { Id = 'B', Price = 30 }, 5);
+            _cart.AddItemsToCart(new StockUnit { Id = 'C', Price = 20 }, 1);
+            _cart.AddItemsToCart(new StockUnit { Id = 'D', Price = 15 }, 1);
+
+            var actual = _promotionEngine.CalculateTotalPrice(_cart);
+
+            Assert.AreEqual(280, actual);
+        }
     }
 }
